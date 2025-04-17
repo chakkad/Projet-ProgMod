@@ -16,7 +16,7 @@ int Coord::getCol() const {
     return col;
 }
 
-std::ostream& operator<<(std::ostream& os, const Coord& coord) {
-    os << "(" << coord.lig << ", " << coord.col << ")";
-    return os;
+std::ostream& operator<<(std::ostream& out, const Coord& coord) {
+    out << "(" << coord.lig << ", " << coord.col << ")";
+    return out;
 }
