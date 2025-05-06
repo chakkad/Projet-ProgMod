@@ -7,15 +7,18 @@ all: main tests
 %.o: %.cpp
 	$(CXX) -o $@ -c $< $(CXXFLAGS)
 
-main: coord.o main.o ensemble.o
+main: coord.o main.o ensemble.o animal.o 
 	$(CXX) -o $@ $^ $(LDFLAGS)
-tests: coord.o test.o ensemble.o
+tests: coord.o test.o ensemble.o animal.o 
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
-main.o: coord.hpp
+main.o: coord.hpp ensemble.hpp animal.hpp
 coord.o: coord.hpp
-test.o: coord.hpp
+test.o: coord.hpp ensemble.hpp animal.hpp doctest.h
 ensemble.o: ensemble.hpp
+animal.o = animal.hpp coord.hpp espece.hpp
+
+
 
 check: tests
 	./tests
