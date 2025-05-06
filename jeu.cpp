@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <cstdlib>
 #include <ctime>
+#include <string>
 
 //Constructor
 Jeu::Jeu() = default;
@@ -87,6 +88,26 @@ void Jeu::verifieGrille() {
     }
 }
 
+void Jeu::verifieGrille() const {
+    // Check all animals are correctly placed
+    Ensemble ids = population.getIds();
+    for (int i = 0; i < ids.cardinal(); i++) {
+        int id = ids.tire();
+        const Animal& animal = population.get(id);
+        Coord pos = animal.getCoord();
+        
+        // Verify grid entry matches animal ID
+        if (grille.getCase(pos) != id) {
+            throw std::runtime_error(
+                "Animal " + std::to_string(id) + 
+                " is not at its registered position (" + 
+                std::to_string(pos.getLig()) + "," + 
+                std::to_string(pos.getCol()) + ")"
+            );
+        }
+    }
+}
+
 Ensemble Jeu::voisinsVides(Coord pos) const {
     Ensemble voisins = pos.voisines();
     Ensemble vides;
@@ -138,6 +159,8 @@ void Jeu::deplaceAnimal(int idAnimal) {
     // Update grid
     grille.videCase(anciennePos);
     grille.setCase(nouvellePos, idAnimal);
+
+    verifieGrille();
 }
 
 //TESTS
