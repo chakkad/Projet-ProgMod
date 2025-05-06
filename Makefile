@@ -1,25 +1,24 @@
 CXX=g++
 CXXFLAGS= -Wall -std=c++11 -g -O3
-EXEC_FILES= main tests
+EXEC_FILES= main test
 
 all: main tests
 # Regle generique
 %.o: %.cpp
 	$(CXX) -o $@ -c $< $(CXXFLAGS)
 
-tests: test.o coord.o
+main: coord.o main.o ensemble.o
+	$(CXX) -o $@ $^ $(LDFLAGS)
+tests: coord.o test.o ensemble.o
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
-main: coord.o main.o
-	$(CXX) -o $@ $^ $(LDFLAGS)
-
-
+main.o: coord.hpp
 coord.o: coord.hpp
 test.o: coord.hpp
-main.o: coord.hpp
+ensemble.o: ensemble.hpp
 
 check: tests
 	./tests
 
 clean:
-	rm -rf *.o $(EXEC_FILES)
+	rm -f *.o $(EXEC_FILES)
