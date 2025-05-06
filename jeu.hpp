@@ -132,6 +132,7 @@ public :
     //Methodes
     void ajouteAnimal(Espece espece, Coord coord); //Add an animal to the game
     void verifieGrille();
+    void verifieGrille() const;
     void deplaceAnimal(int idAnimal);
     Ensemble voisinsVides(Coord pos) const;
     Ensemble voisinsEspece(Coord pos, Espece espece) const;
