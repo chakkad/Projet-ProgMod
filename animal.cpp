@@ -5,8 +5,13 @@
 #include <ctime> //Time()
 
 //Constructors
-Animal::Animal(int id, Espece e, const Coord& c) 
-    : id(id), espece(e), coord(c), faim(0), age(0) {}
+Animal::Animal(int id, Espece e, const Coord& c) : id(id), espece(e), coord(c), age(0) {
+    if (e == Espece::Renard) {
+        faim = Config::FoodInit; // Initialisation avec FoodInit
+    } else {
+        faim = 0;
+    }
+}
 
 Animal::Animal() 
     : id(-1), espece(Espece::Lapin), coord(Coord(0,0)), faim(0), age(0) {}
@@ -34,28 +39,26 @@ void Animal::setCoord(const Coord& c) {
 //Functions
 bool Animal::meurt() const {
     if (espece == Espece::Renard) {
-        return (faim >= 50);
-    } else if (age>50) {
-        int chance = rand() % 100;
-        return (chance < 20);
+        return (faim <= 0); // Meurt si faim ≤ 0
     }
-    return false;    
+    return false; // Lapins ne meurent pas de faim
 }
    
 
 bool Animal::seReprodruit(int nbVoisinsVides) const {
-    if(espece == Espece::Lapin) {
-        // Rabbit reproduces if: age >= 3 and at least 1 empty neighbor
-        return (age >= 3) && (nbVoisinsVides >= 1);
+    if (espece == Espece::Lapin) {
+        return (nbVoisinsVides >= Config::MinFreeBirthLapin) 
+            && (rand() % 100 < Config::ProbBirthLapin * 100);
     } else {
-        // Fox reproduces if: age >= 5 and at least 2 empty neighbors
-        return (age >= 5) && (nbVoisinsVides >= 2);
+        return (faim >= Config::FoodReprod) 
+            && (rand() % 100 < Config::ProbBirthRenard * 100);
     }
 }
 
-void Animal::mange() { 
-    if(espece == Espece::Renard) {
-        faim = 0;  // Reset hunger counter
+void Animal::mange() {
+    if (espece == Espece::Renard) {
+        faim += Config::FoodLapin; // Augmente la faim selon FoodLapin
+        if (faim > Config::MaxFood) faim = Config::MaxFood; // Plafonne à MaxFood
     }
     age++;
 }
