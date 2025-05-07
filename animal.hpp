@@ -1,6 +1,7 @@
 #include <iostream>
 #include "espece.hpp"
 #include "coord.hpp"
+#include "config.hpp"
 using namespace std;
 
 class Animal {
