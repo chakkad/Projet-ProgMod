@@ -9,25 +9,15 @@
 Jeu::Jeu() = default;
 
 Jeu::Jeu(double probLapins, double probRenard) {
-    // Seed random generator
-    std::srand(std::time(0));
-    
-    // Validate probabilities
-    if(probLapins < 0 || probRenard < 0 || (probLapins + probRenard) > 1) {
-        throw std::invalid_argument("Invalid probabilities");
-    }
-
-    // Initialize grid
-    for(int lig = 0; lig < TAILLEGRILLE; lig++) {
-        for(int col = 0; col < TAILLEGRILLE; col++) {
+    srand(time(0));
+    // Initialisation de la grille avec les probabilités
+    for (int lig = 0; lig < TAILLEGRILLE; lig++) {
+        for (int col = 0; col < TAILLEGRILLE; col++) {
             double r = static_cast<double>(rand()) / RAND_MAX;
-            Coord pos(lig, col);
-            
-            if(r < probLapins) {
-                ajouteAnimal(Espece::Lapin, pos);
-            } 
-            else if(r < probLapins + probRenard) {
-                ajouteAnimal(Espece::Renard, pos);
+            if (r < probLapins) {
+                ajouteAnimal(Espece::Lapin, Coord(lig, col));
+            } else if (r < probLapins + probRenard) {
+                ajouteAnimal(Espece::Renard, Coord(lig, col));
             }
         }
     }
