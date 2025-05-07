@@ -1,6 +1,7 @@
 #include <vector>
 #include <stdexcept>
 #include <iostream>
+#include "config.hpp"
 using namespace std;
 
 const int TAILLEGRILLE = 40; //EXO 2 (1) Can be changed
@@ -79,6 +80,7 @@ public :
     void mange(); // Feeds the animal (e.g., resets hunger counter)
     void jeune(); // The animal does not eat (e.g., increments hunger counter)
     void affiche(std::ostream& os) const; // Prints the animal's state
+    void setFaim(int f);
     //Operators
     friend std::ostream& operator<<(std::ostream& out, const Animal& a);
 };
@@ -134,6 +136,9 @@ public :
     void verifieGrille();
     void verifieGrille() const;
     void deplaceAnimal(int idAnimal);
+    void deplaceAnimauxLapins();  // Move all rabbits
+    void deplaceAnimauxRenards(); // Move all foxes
+    void step();                  // Full simulation step
     Ensemble voisinsVides(Coord pos) const;
     Ensemble voisinsEspece(Coord pos, Espece espece) const;
     Population& getPopulation();
